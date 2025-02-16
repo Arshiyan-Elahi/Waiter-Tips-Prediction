@@ -1,9 +1,7 @@
 name: Auto Upload from Google Colab
 
 on:
-  schedule:
-    - cron: '0 0 * * *'  # Runs daily at midnight UTC (Change as needed)
-  workflow_dispatch:  # Allows manual trigger
+  workflow_dispatch:  # Allows manual trigger only (One-time use)
 
 jobs:
   upload:
@@ -26,7 +24,7 @@ jobs:
       run: |
         gdown --folder "https://drive.google.com/drive/folders/1k161D-rqnILNj1nJSYK3DZNFPk4y9_V5?usp=drive_link" -O images/
 
-    - name: Commit and Push Changes
+    - name: Commit and Push Changes with Custom Date
       run: |
         DATE="2023-07-15"  # Manually set the date
         git config --global user.name "github-actions[bot]"
