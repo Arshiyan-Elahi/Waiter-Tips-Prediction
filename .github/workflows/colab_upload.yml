@@ -1,0 +1,35 @@
+name: Auto Upload from Google Colab
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily at midnight UTC (Change as needed)
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.8'
+
+    - name: Install Dependencies
+      run: |
+        pip install gdown
+
+    - name: Download Data from Google Drive
+      run: |
+        gdown --folder "https://drive.google.com/drive/folders/1k161D-rqnILNj1nJSYK3DZNFPk4y9_V5?usp=drive_link" -O images/
+
+    - name: Commit and Push Changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add images/
+        git commit -m "📦 Auto-Uploaded images from Google Colab"
+        git push
